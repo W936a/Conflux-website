@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CONFLUX SYSTEMS (PTY) LTD — Autonomous AI Technology</title>
+<meta name="description" content="CONFLUX SYSTEMS builds advanced autonomous AI ecosystems. Based in Cape Town, South Africa."/>
+<meta property="og:title" content="CONFLUX SYSTEMS (PTY) LTD"/>
+<meta property="og:description" content="Autonomous AI Technology from Cape Town, South Africa"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#040810;--bg2:#060d1a;--surface:#080f1c;--border:#0a2040;--border2:#1a3a5c;
+  --cyan:#00b4d8;--cyan-mid:#0096c7;--cyan-dim:rgba(0,180,216,0.08);--cyan-glow:rgba(0,180,216,0.2);
+  --blue:#0077b6;--chrome:#c8d8e8;--chrome-bright:#e8f2ff;--chrome-dim:#9ab8d8;
+  --green:#00e676;--red:#ef4444;--amber:#f59e0b;--muted:#4a7090;--purple:#7c3aed;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--chrome);font-family:"Rajdhani",sans-serif;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px;}
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.ambient::before{content:"";position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(0,180,216,0.06),transparent 65%);border-radius:50%;top:-100px;right:-100px;}
+.ambient::after{content:"";position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(0,119,182,0.05),transparent 65%);border-radius:50%;bottom:-80px;left:-80px;}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,180,216,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,216,0.03) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0;}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid rgba(0,230,118,.3);color:var(--green);padding:11px 22px;border-radius:10px;font-family:"Share Tech Mono",monospace;font-size:11px;letter-spacing:.1em;z-index:9998;display:none;white-space:nowrap;box-shadow:0 8px 28px rgba(0,0,0,.3);}
+.toast.show{display:block;animation:toastIn 3s ease forwards;}
+@keyframes toastIn{0%{opacity:0;transform:translateX(-50%) translateY(8px);}12%{opacity:1;transform:translateX(-50%) translateY(0);}80%{opacity:1;}100%{opacity:0;}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(4,8,16,0.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+.nav-brand{text-decoration:none;display:flex;flex-direction:column;}
+.nav-brand-top{font-family:"Orbitron",monospace;font-size:11px;font-weight:700;letter-spacing:.28em;color:var(--chrome-bright);}
+.nav-brand-bot{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.2em;color:var(--muted);margin-top:2px;}
+.nav-links{display:flex;gap:24px;align-items:center;}
+.nav-link{font-family:"Rajdhani",sans-serif;font-size:13px;font-weight:600;letter-spacing:.18em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;cursor:pointer;border:none;background:none;}
+.nav-link:hover{color:var(--cyan);}
+.nav-cta{font-family:"Orbitron",monospace;font-size:9px;font-weight:600;letter-spacing:.18em;color:var(--cyan);border:1px solid rgba(0,180,216,.3);padding:9px 18px;border-radius:6px;cursor:pointer;transition:all .2s;background:none;}
+.nav-cta:hover{background:var(--cyan-dim);border-color:var(--cyan);}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:1;padding:100px 24px 60px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);border-radius:100px;padding:7px 18px;font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--green);letter-spacing:.18em;margin-bottom:24px;}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite;}
+.hero-title{font-family:"Orbitron",monospace;font-size:clamp(32px,6vw,72px);font-weight:900;letter-spacing:.04em;line-height:1.1;color:var(--chrome-bright);margin-bottom:8px;}
+.hero-title .accent{color:var(--cyan);}
+.hero-sub{font-family:"Orbitron",monospace;font-size:clamp(12px,2vw,18px);font-weight:400;letter-spacing:.18em;color:var(--muted);margin-bottom:20px;}
+.hero-desc{font-size:clamp(14px,2vw,17px);font-weight:400;color:var(--chrome-dim);max-width:620px;margin:0 auto 32px;line-height:1.8;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;}
+.btn-primary{font-family:"Orbitron",monospace;font-size:10px;font-weight:700;letter-spacing:.18em;color:#fff;background:linear-gradient(135deg,var(--cyan),var(--blue));padding:14px 32px;border-radius:8px;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 18px var(--cyan-glow);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--cyan-glow);}
+.btn-secondary{font-family:"Orbitron",monospace;font-size:10px;font-weight:600;letter-spacing:.18em;color:var(--chrome);background:transparent;padding:14px 32px;border-radius:8px;border:1.5px solid var(--border2);cursor:pointer;transition:all .25s;}
+.btn-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+.hero-stats{display:flex;justify-content:center;border-top:1px solid var(--border);padding-top:28px;width:100%;max-width:700px;flex-wrap:wrap;}
+.stat{padding:6px 24px;border-right:1px solid var(--border);text-align:center;flex:1;min-width:120px;}
+.stat:last-child{border-right:none;}
+.stat-num{font-family:"Orbitron",monospace;font-size:22px;font-weight:700;color:var(--cyan);}
+.stat-label{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.18em;color:var(--muted);margin-top:4px;}
+
+/* SECTIONS */
+section{position:relative;z-index:1;}
+.section-wrap{max-width:1100px;margin:0 auto;padding:0 24px;}
+.section-tag{font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.42em;color:var(--cyan);margin-bottom:12px;text-transform:uppercase;}
+.section-title{font-family:"Orbitron",monospace;font-size:clamp(22px,3.5vw,40px);font-weight:700;letter-spacing:.04em;line-height:1.2;margin-bottom:14px;color:var(--chrome-bright);}
+.section-title .accent{color:var(--cyan);}
+.section-body{font-size:16px;font-weight:400;color:var(--chrome-dim);line-height:1.8;max-width:580px;}
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);}
+
+/* SYSTEM STATUS */
+.status-section{padding:60px 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.status-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px;}
+.status-live-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);border-radius:100px;padding:6px 14px;font-family:"Share Tech Mono",monospace;font-size:10px;color:var(--green);letter-spacing:.14em;}
+.status-live-badge span{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite;display:inline-block;}
+.status-panels{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.status-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;position:relative;overflow:hidden;}
+.status-panel::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.status-panel-title{font-family:"Orbitron",monospace;font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--chrome-bright);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.status-panel-title .panel-icon{font-size:14px;}
+.status-grid{display:flex;flex-direction:column;gap:8px;}
+.status-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,0.3);border-radius:8px;border:1px solid var(--border);}
+.status-row-name{font-family:"Rajdhani",sans-serif;font-size:13px;font-weight:600;letter-spacing:.1em;color:var(--chrome-dim);}
+.status-row-right{display:flex;align-items:center;gap:10px;}
+.status-row-port{font-family:"Share Tech Mono",monospace;font-size:9px;color:var(--muted);}
+.status-indicator{display:flex;align-items:center;gap:5px;font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.12em;}
+.dot-online{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;}
+.dot-offline{width:7px;height:7px;border-radius:50%;background:var(--red);}
+.dot-standby{width:7px;height:7px;border-radius:50%;background:var(--amber);animation:pulse 2s infinite;}
+.ind-online{color:var(--green);}
+.ind-offline{color:var(--red);}
+.ind-standby{color:var(--amber);}
+
+/* PHOENIX DASHBOARD */
+.phoenix-section{padding:80px 0;background:linear-gradient(135deg,rgba(0,180,216,0.04),rgba(124,58,237,0.04));}
+.phoenix-card{background:var(--surface);border:1px solid rgba(0,180,216,.2);border-radius:18px;padding:32px;position:relative;overflow:hidden;}
+.phoenix-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--cyan),var(--purple));}
+.phoenix-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;flex-wrap:wrap;}
+.phoenix-avatar{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--purple),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.phoenix-info-name{font-family:"Orbitron",monospace;font-size:20px;font-weight:700;letter-spacing:.08em;color:var(--chrome-bright);}
+.phoenix-info-role{font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.2em;color:var(--cyan);margin-top:3px;}
+.phoenix-status-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,.3);border-radius:100px;padding:5px 12px;font-family:"Share Tech Mono",monospace;font-size:9px;color:var(--green);letter-spacing:.14em;margin-left:auto;}
+.phoenix-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;}
+.phoenix-metric{background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.phoenix-metric-label{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.18em;color:var(--muted);margin-bottom:6px;}
+.phoenix-metric-val{font-family:"Orbitron",monospace;font-size:18px;font-weight:700;color:var(--cyan);}
+.phoenix-metric-sub{font-size:11px;color:var(--chrome-dim);margin-top:2px;}
+.phoenix-loops{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
+.loop-card{background:rgba(0,180,216,0.04);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px;}
+.loop-icon{width:32px;height:32px;border-radius:8px;background:rgba(0,180,216,0.1);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.loop-name{font-family:"Rajdhani",sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--chrome-dim);text-transform:uppercase;}
+.loop-interval{font-family:"Share Tech Mono",monospace;font-size:9px;color:var(--muted);margin-top:2px;}
+
+/* HERO DASHBOARD */
+.hero-dash-section{padding:80px 0;background:var(--bg2);border-top:1px solid var(--border);}
+.hero-dash-card{background:var(--surface);border:1px solid rgba(245,158,11,.15);border-radius:18px;padding:32px;position:relative;overflow:hidden;}
+.hero-dash-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),var(--cyan),var(--amber));}
+.hero-dash-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;flex-wrap:wrap;}
+.hero-avatar{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--amber),var(--blue));display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.hero-info-name{font-family:"Orbitron",monospace;font-size:20px;font-weight:700;letter-spacing:.08em;color:var(--chrome-bright);}
+.hero-info-role{font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.2em;color:var(--amber);margin-top:3px;}
+.hero-brokers{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:24px;}
+.broker-card{background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.broker-name{font-family:"Orbitron",monospace;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--chrome-bright);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.broker-stat{display:flex;justify-content:space-between;margin-bottom:4px;}
+.broker-stat-label{font-family:"Share Tech Mono",monospace;font-size:9px;color:var(--muted);}
+.broker-stat-val{font-family:"Share Tech Mono",monospace;font-size:9px;color:var(--chrome-dim);}
+.hero-capabilities{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;}
+.cap-pill{background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 14px;font-family:"Rajdhani",sans-serif;font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--chrome-dim);display:flex;align-items:center;gap:8px;}
+.cap-pill-dot{width:5px;height:5px;border-radius:50%;background:var(--amber);flex-shrink:0;}
+
+/* EMPLOYEES */
+.employees-section{padding:100px 0;border-top:1px solid var(--border);}
+.employees-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:40px;}
+.employee-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;transition:all .3s;position:relative;overflow:hidden;}
+.employee-card:hover{border-color:rgba(0,180,216,.25);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,180,216,0.08);}
+.employee-card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity .3s;}
+.employee-card:hover::before{opacity:1;}
+.employee-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.employee-avatar{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.emp-phoenix{background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(0,180,216,.3));}
+.emp-cfo{background:linear-gradient(135deg,rgba(0,230,118,.2),rgba(0,119,182,.2));}
+.emp-cmo{background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(239,68,68,.2));}
+.emp-cto{background:linear-gradient(135deg,rgba(0,180,216,.2),rgba(124,58,237,.2));}
+.emp-cpo{background:linear-gradient(135deg,rgba(0,230,118,.15),rgba(0,180,216,.15));}
+.emp-craftsman{background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(0,180,216,.2));}
+.emp-merchant{background:linear-gradient(135deg,rgba(239,68,68,.15),rgba(245,158,11,.15));}
+.emp-herald{background:linear-gradient(135deg,rgba(0,180,216,.2),rgba(0,230,118,.1));}
+.emp-operator{background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(239,68,68,.15));}
+.emp-pipeline{background:linear-gradient(135deg,rgba(0,119,182,.2),rgba(0,180,216,.2));}
+.employee-name{font-family:"Orbitron",monospace;font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--chrome-bright);}
+.employee-role{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.16em;color:var(--muted);margin-top:2px;}
+.employee-status{margin-left:auto;display:flex;align-items:center;gap:5px;font-family:"Share Tech Mono",monospace;font-size:9px;}
+.employee-desc{font-size:13px;color:var(--chrome-dim);line-height:1.65;margin-bottom:12px;}
+.employee-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.emp-tag{font-family:"Share Tech Mono",monospace;font-size:8px;letter-spacing:.1em;color:var(--muted);background:rgba(0,180,216,0.05);border:1px solid var(--border);border-radius:4px;padding:3px 8px;}
+
+/* MCP SERVERS */
+.mcp-section{padding:100px 0;background:linear-gradient(180deg,var(--bg2),var(--bg));border-top:1px solid var(--border);}
+.mcp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:40px;}
+.mcp-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;transition:all .3s;position:relative;overflow:hidden;}
+.mcp-card:hover{border-color:rgba(0,180,216,.3);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,180,216,0.1);}
+.mcp-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.mcp-card-name{font-family:"Orbitron",monospace;font-size:14px;font-weight:700;letter-spacing:.08em;color:var(--chrome-bright);}
+.mcp-card-port{font-family:"Share Tech Mono",monospace;font-size:9px;color:var(--muted);margin-top:3px;}
+.mcp-tools-count{font-family:"Orbitron",monospace;font-size:20px;font-weight:700;color:var(--cyan);text-align:right;}
+.mcp-tools-label{font-family:"Share Tech Mono",monospace;font-size:8px;color:var(--muted);text-align:right;}
+.mcp-desc{font-size:13px;color:var(--chrome-dim);line-height:1.65;margin-bottom:14px;}
+.mcp-url{font-family:"Share Tech Mono",monospace;font-size:9px;color:var(--cyan);background:rgba(0,180,216,0.05);border:1px solid rgba(0,180,216,.15);border-radius:6px;padding:6px 10px;margin-bottom:12px;word-break:break-all;}
+.mcp-status-row{display:flex;align-items:center;justify-content:space-between;}
+.mcp-status{display:flex;align-items:center;gap:6px;font-family:"Share Tech Mono",monospace;font-size:9px;color:var(--green);letter-spacing:.1em;}
+.mcp-status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+
+/* PRODUCTS */
+.products-section{padding:100px 0;border-top:1px solid var(--border);}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:44px;}
+.product-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;transition:all .3s;position:relative;overflow:hidden;}
+.product-card:hover{border-color:rgba(0,180,216,.25);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,180,216,0.1);}
+.product-card.featured::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.product-icon{font-size:28px;margin-bottom:14px;}
+.product-tag{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.28em;color:var(--muted);margin-bottom:6px;}
+.product-name{font-family:"Orbitron",monospace;font-size:15px;font-weight:700;letter-spacing:.04em;margin-bottom:8px;color:var(--chrome-bright);}
+.product-desc{font-size:13px;color:var(--chrome-dim);line-height:1.7;margin-bottom:14px;}
+.product-status{display:inline-flex;align-items:center;gap:6px;font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.18em;}
+.status-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.status-live{color:var(--green);}.status-live .status-dot{background:var(--green);animation:pulse 2s infinite;}
+.status-dev{color:var(--cyan);}.status-dev .status-dot{background:var(--cyan);}
+.status-vault{color:var(--muted);}.status-vault .status-dot{background:var(--muted);}
+
+/* ABOUT */
+.about-section{padding:100px 0;background:linear-gradient(180deg,var(--bg),var(--bg2),var(--bg));border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.about-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.about-cards{display:flex;flex-direction:column;gap:12px;}
+.about-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start;transition:all .25s;}
+.about-card:hover{border-color:rgba(0,180,216,.3);transform:translateX(4px);}
+.about-card-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
+.about-card-title{font-family:"Rajdhani",sans-serif;font-size:13px;font-weight:700;letter-spacing:.16em;color:var(--cyan);margin-bottom:4px;text-transform:uppercase;}
+.about-card-body{font-size:13px;color:var(--chrome-dim);line-height:1.6;}
+
+/* DIRECTOR */
+.director-section{padding:100px 0;border-top:1px solid var(--border);}
+.director-card{background:var(--surface);border:1px solid rgba(0,180,216,.15);border-radius:20px;padding:44px;display:grid;grid-template-columns:auto 1fr;gap:44px;align-items:start;position:relative;overflow:hidden;}
+.director-card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.director-avatar{width:120px;height:120px;border-radius:16px;background:linear-gradient(135deg,rgba(0,180,216,.2),rgba(0,119,182,.1));border:2px solid rgba(0,180,216,.3);display:flex;align-items:center;justify-content:center;font-size:48px;}
+.director-tag{font-family:"Share Tech Mono",monospace;font-size:10px;letter-spacing:.32em;color:var(--cyan);margin-bottom:8px;}
+.director-name{font-family:"Orbitron",monospace;font-size:26px;font-weight:700;letter-spacing:.06em;margin-bottom:6px;color:var(--chrome-bright);}
+.director-title{font-family:"Rajdhani",sans-serif;font-size:12px;font-weight:500;letter-spacing:.2em;color:var(--muted);margin-bottom:20px;text-transform:uppercase;}
+.director-bio{font-size:15px;color:var(--chrome-dim);line-height:1.9;margin-bottom:24px;}
+.director-bio strong{color:var(--chrome-bright);font-weight:600;}
+.director-highlights{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.highlight{background:rgba(0,180,216,.05);border:1px solid var(--border);border-radius:10px;padding:14px;}
+.highlight-label{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.2em;color:var(--cyan);margin-bottom:4px;}
+.highlight-val{font-size:13px;color:var(--chrome-dim);}
+
+/* CONTACT */
+.contact-section{padding:100px 0;border-top:1px solid var(--border);}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:44px;}
+.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;transition:all .25s;}
+.contact-card:hover{border-color:rgba(0,180,216,.25);}
+.contact-icon{font-size:22px;margin-bottom:10px;}
+.contact-label{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.28em;color:var(--cyan);margin-bottom:6px;}
+.contact-val{font-size:13px;color:var(--chrome-dim);}
+.contact-val a{color:var(--chrome-dim);text-decoration:none;transition:color .2s;}
+.contact-val a:hover{color:var(--cyan);}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;position:relative;z-index:1;background:var(--surface);}
+.footer-logo{font-family:"Orbitron",monospace;font-size:11px;font-weight:700;letter-spacing:.22em;color:var(--muted);}
+.footer-links{display:flex;gap:22px;flex-wrap:wrap;}
+.footer-link{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.18em;color:var(--muted);cursor:pointer;transition:color .2s;text-transform:uppercase;text-decoration:none;}
+.footer-link:hover{color:var(--cyan);}
+.footer-copy{font-family:"Share Tech Mono",monospace;font-size:9px;letter-spacing:.1em;color:var(--muted);opacity:.5;}
+
+@media(max-width:800px){
+  nav{padding:12px 18px;}
+  .nav-links{display:none;}
+  .about-inner,.director-card{grid-template-columns:1fr;gap:28px;padding:24px;}
+  .status-panels{grid-template-columns:1fr;}
+  .director-highlights{grid-template-columns:1fr;}
+  footer{padding:20px 18px;flex-direction:column;text-align:center;}
+  .hero{padding:80px 18px 50px;}
+  .section-wrap{padding:0 18px;}
+}
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+<div class="grid-bg"></div>
+<div class="toast" id="toast"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-brand-top">CONFLUX SYSTEMS</div>
+    <div class="nav-brand-bot">PTY LTD &nbsp;·&nbsp; EST. 2025 &nbsp;·&nbsp; CAPE TOWN</div>
+  </a>
+  <div class="nav-links">
+    <button class="nav-link" onclick="goTo('status')">SYSTEM</button>
+    <button class="nav-link" onclick="goTo('employees')">TEAM</button>
+    <button class="nav-link" onclick="goTo('mcp')">MCP SERVERS</button>
+    <button class="nav-link" onclick="goTo('products')">PRODUCTS</button>
+    <button class="nav-link" onclick="goTo('director')">LEADERSHIP</button>
+    <button class="nav-cta" onclick="goTo('contact')">CONTACT</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span class="hero-badge-dot"></span> AUTONOMOUS AI · CAPE TOWN · ONLINE</div>
+  <h1 class="hero-title">CONFLUX<br/><span class="accent">SYSTEMS</span></h1>
+  <div class="hero-sub">AUTONOMOUS INTELLIGENCE INFRASTRUCTURE</div>
+  <p class="hero-desc">We build self-operating AI ecosystems that think, decide, trade, create, and grow — without human intervention. The future of business is autonomous.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="goTo('mcp')">EXPLORE MCP SERVERS</button>
+    <button class="btn-secondary" onclick="goTo('status')">SYSTEM STATUS</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">9</div><div class="stat-label">AI EMPLOYEES</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">MCP SERVERS</div></div>
+    <div class="stat"><div class="stat-num">59</div><div class="stat-label">MCP TOOLS</div></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-label">BROKERS</div></div>
+    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">AUTONOMOUS</div></div>
+  </div>
+</section>
+
+<!-- SYSTEM STATUS -->
+<section class="status-section" id="status">
+  <div class="section-wrap">
+    <div class="status-header">
+      <div>
+        <div class="section-tag">LIVE INFRASTRUCTURE</div>
+        <h2 class="section-title">System <span class="accent">Status</span></h2>
+      </div>
+      <div class="status-live-badge"><span></span> ALL SYSTEMS OPERATIONAL</div>
+    </div>
+    <div class="status-panels">
+      <!-- AI EMPLOYEES PANEL -->
+      <div class="status-panel">
+        <div class="status-panel-title"><span class="panel-icon">🤖</span> AI EMPLOYEE STACK</div>
+        <div class="status-grid">
+          <div class="status-row">
+            <span class="status-row-name">PHOENIX</span>
+            <div class="status-row-right">
+              <span class="status-row-port">API · 3700</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-name">CRAFTSMAN</span>
+            <div class="status-row-right">
+              <span class="status-row-port">3603</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-name">MERCHANT</span>
+            <div class="status-row-right">
+              <span class="status-row-port">3604</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-name">HERALD</span>
+            <div class="status-row-right">
+              <span class="status-row-port">3606</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-name">PIPELINE</span>
+            <div class="status-row-right">
+              <span class="status-row-port">3607</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-name">CFO</span>
+            <div class="status-row-right">
+              <span class="status-row-port">3900</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-name">HERO TRADING</span>
+            <div class="status-row-right">
+              <span class="status-row-port">BINANCE · OKX · ALPACA</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">LIVE</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- MCP SERVERS PANEL -->
+      <div class="status-panel">
+        <div class="status-panel-title"><span class="panel-icon">🔌</span> MCP SERVER STACK</div>
+        <div class="status-grid">
+          <div class="status-row">
+            <span class="status-row-name">CONFLUX MEMORY</span>
+            <div class="status-row-right">
+              <span class="status-row-port">8082</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-name">CONFLUX CHIRION</span>
+            <div class="status-row-right">
+              <span class="status-row-port">8083</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-name">CONFLUX FOREMAN</span>
+            <div class="status-row-right">
+              <span class="status-row-port">8084</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-name">CONFLUX SHIELD</span>
+            <div class="status-row-right">
+              <span class="status-row-port">8085</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-name">CONFLUX DOMINION</span>
+            <div class="status-row-right">
+              <span class="status-row-port">8086</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-name">confluxsystems.tech</span>
+            <div class="status-row-right">
+              <span class="status-row-port">HTTPS · SSL</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">SECURED</span></div>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-name">HETZNER VPS</span>
+            <div class="status-row-right">
+              <span class="status-row-port">NBG1 · 4GB</span>
+              <div class="status-indicator"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOENIX DASHBOARD -->
+<section class="phoenix-section" id="phoenix">
+  <div class="section-wrap">
+    <div class="section-tag">CENTRAL INTELLIGENCE</div>
+    <h2 class="section-title" style="margin-bottom:28px;">PHOENIX <span class="accent">Dashboard</span></h2>
+    <div class="phoenix-card">
+      <div class="phoenix-header">
+        <div class="phoenix-avatar">🔥</div>
+        <div>
+          <div class="phoenix-info-name">PHOENIX</div>
+          <div class="phoenix-info-role">AUTONOMOUS LEARNING INTELLIGENCE · CENTRAL ORCHESTRATOR</div>
+        </div>
+        <div class="phoenix-status-badge"><span class="dot-online" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;margin-right:4px;"></span> FULLY AUTONOMOUS</div>
+      </div>
+      <div class="phoenix-metrics">
+        <div class="phoenix-metric">
+          <div class="phoenix-metric-label">ARCHITECTURE</div>
+          <div class="phoenix-metric-val" style="font-size:14px;">3-LAYER</div>
+          <div class="phoenix-metric-sub">Knowledge · Reasoning · Self-Healing</div>
+        </div>
+        <div class="phoenix-metric">
+          <div class="phoenix-metric-label">AI ENGINE</div>
+          <div class="phoenix-metric-val" style="font-size:14px;">GROQ</div>
+          <div class="phoenix-metric-sub">Llama 3.3 70B · Bull vs Bear Swarm</div>
+        </div>
+        <div class="phoenix-metric">
+          <div class="phoenix-metric-label">MEMORY</div>
+          <div class="phoenix-metric-val" style="font-size:14px;">SQLite</div>
+          <div class="phoenix-metric-sub">Knowledge Core · Persistent</div>
+        </div>
+        <div class="phoenix-metric">
+          <div class="phoenix-metric-label">ACTIVE LOOPS</div>
+          <div class="phoenix-metric-val">4</div>
+          <div class="phoenix-metric-sub">Running continuously</div>
+        </div>
+      </div>
+      <div class="phoenix-loops">
+        <div class="loop-card"><div class="loop-icon">❤️</div><div><div class="loop-name">Health Monitor</div><div class="loop-interval">Every 1 min</div></div></div>
+        <div class="loop-card"><div class="loop-icon">🧠</div><div><div class="loop-name">Reasoning Engine</div><div class="loop-interval">Every 2 min</div></div></div>
+        <div class="loop-card"><div class="loop-icon">🌐</div><div><div class="loop-name">Web Learning</div><div class="loop-interval">Every 5 min</div></div></div>
+        <div class="loop-card"><div class="loop-icon">🪞</div><div><div class="loop-name">Self-Reflection</div><div class="loop-interval">Every 30 min</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HERO DASHBOARD -->
+<section class="hero-dash-section" id="hero-trading">
+  <div class="section-wrap">
+    <div class="section-tag">AUTONOMOUS TRADING</div>
+    <h2 class="section-title" style="margin-bottom:28px;">HERO <span class="accent">Dashboard</span></h2>
+    <div class="hero-dash-card">
+      <div class="hero-dash-header">
+        <div class="hero-avatar">⚡</div>
+        <div>
+          <div class="hero-info-name">HERO v4.4</div>
+          <div class="hero-info-role">AUTONOMOUS TRADING INTELLIGENCE · MULTI-BROKER</div>
+        </div>
+        <div class="phoenix-status-badge" style="border-color:rgba(245,158,11,.3);color:var(--amber);background:rgba(245,158,11,0.1);"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--amber);animation:pulse 2s infinite;margin-right:4px;"></span> LIVE TRADING</div>
+      </div>
+      <div class="hero-brokers">
+        <div class="broker-card">
+          <div class="broker-name"><span>🟡</span> BINANCE</div>
+          <div class="broker-stat"><span class="broker-stat-label">MARKET</span><span class="broker-stat-val">CRYPTO · USDT PAIRS</span></div>
+          <div class="broker-stat"><span class="broker-stat-label">MODE</span><span class="broker-stat-val">LIVE · ZERO FEES</span></div>
+          <div class="broker-stat"><span class="broker-stat-label">STATUS</span><span class="broker-stat-val" style="color:var(--green);">ACTIVE</span></div>
+        </div>
+        <div class="broker-card">
+          <div class="broker-name"><span>⚫</span> OKX</div>
+          <div class="broker-stat"><span class="broker-stat-label">MARKET</span><span class="broker-stat-val">CRYPTO · SPOT</span></div>
+          <div class="broker-stat"><span class="broker-stat-label">MODE</span><span class="broker-stat-val">LIVE</span></div>
+          <div class="broker-stat"><span class="broker-stat-label">STATUS</span><span class="broker-stat-val" style="color:var(--green);">ACTIVE</span></div>
+        </div>
+        <div class="broker-card">
+          <div class="broker-name"><span>🔵</span> ALPACA</div>
+          <div class="broker-stat"><span class="broker-stat-label">MARKET</span><span class="broker-stat-val">US EQUITIES</span></div>
+          <div class="broker-stat"><span class="broker-stat-label">MODE</span><span class="broker-stat-val">LIVE</span></div>
+          <div class="broker-stat"><span class="broker-stat-label">STATUS</span><span class="broker-stat-val" style="color:var(--green);">ACTIVE</span></div>
+        </div>
+      </div>
+      <div class="hero-capabilities">
+        <div class="cap-pill"><span class="cap-pill-dot"></span> Queen Intelligence Core</div>
+        <div class="cap-pill"><span class="cap-pill-dot"></span> 5-Agent Swarm</div>
+        <div class="cap-pill"><span class="cap-pill-dot"></span> Genetic Strategy Evolution</div>
+        <div class="cap-pill"><span class="cap-pill-dot"></span> Shadow Trading</div>
+        <div class="cap-pill"><span class="cap-pill-dot"></span> Regime Supervisor</div>
+        <div class="cap-pill"><span class="cap-pill-dot"></span> Fear & Greed Weighting</div>
+        <div class="cap-pill"><span class="cap-pill-dot"></span> Confluence Scoring</div>
+        <div class="cap-pill"><span class="cap-pill-dot"></span> Failure Memory</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI EMPLOYEES -->
+<section class="employees-section" id="employees">
+  <div class="section-wrap">
+    <div class="section-tag">THE TEAM</div>
+    <h2 class="section-title">AI <span class="accent">Employees</span></h2>
+    <p class="section-body">Nine autonomous agents. Each with a defined role, its own reasoning engine, and 24/7 availability. No salaries. No sick days. No limits.</p>
+    <div class="employees-grid">
+
+      <div class="employee-card">
+        <div class="employee-header">
+          <div class="employee-avatar emp-phoenix">🔥</div>
+          <div>
+            <div class="employee-name">PHOENIX</div>
+            <div class="employee-role">CENTRAL ORCHESTRATOR</div>
+          </div>
+          <div class="employee-status"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+        </div>
+        <div class="employee-desc">Autonomous learning intelligence. Orchestrates all agents via Bull vs Bear swarm reasoning. Self-healing, self-reflecting, continuously learning.</div>
+        <div class="employee-tags"><span class="emp-tag">GROQ</span><span class="emp-tag">SQLITE</span><span class="emp-tag">4 LOOPS</span><span class="emp-tag">AUTONOMOUS</span></div>
+      </div>
+
+      <div class="employee-card">
+        <div class="employee-header">
+          <div class="employee-avatar emp-cfo">💰</div>
+          <div>
+            <div class="employee-name">CFO</div>
+            <div class="employee-role">CHIEF FINANCIAL OFFICER</div>
+          </div>
+          <div class="employee-status"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+        </div>
+        <div class="employee-desc">SA tax law, offshore structures, crisis protocols. Full financial governance and reporting. Port 3900.</div>
+        <div class="employee-tags"><span class="emp-tag">SA TAX</span><span class="emp-tag">OFFSHORE</span><span class="emp-tag">CRISIS</span></div>
+      </div>
+
+      <div class="employee-card">
+        <div class="employee-header">
+          <div class="employee-avatar emp-cmo">📣</div>
+          <div>
+            <div class="employee-name">CMO</div>
+            <div class="employee-role">CHIEF MARKETING OFFICER</div>
+          </div>
+          <div class="employee-status"><span class="dot-standby"></span><span class="ind-standby">STANDBY</span></div>
+        </div>
+        <div class="employee-desc">Full GTM strategy with African market nuance. Brand governance, campaign management, growth analytics. Port 3901.</div>
+        <div class="employee-tags"><span class="emp-tag">GTM</span><span class="emp-tag">AFRICA</span><span class="emp-tag">BRAND</span></div>
+      </div>
+
+      <div class="employee-card">
+        <div class="employee-header">
+          <div class="employee-avatar emp-cto">🔧</div>
+          <div>
+            <div class="employee-name">CTO</div>
+            <div class="employee-role">CHIEF TECHNOLOGY OFFICER</div>
+          </div>
+          <div class="employee-status"><span class="dot-standby"></span><span class="ind-standby">STANDBY</span></div>
+        </div>
+        <div class="employee-desc">Health monitoring, architecture decision records, security auditing. Full stack technical governance. Port 3902.</div>
+        <div class="employee-tags"><span class="emp-tag">MONITORING</span><span class="emp-tag">SECURITY</span><span class="emp-tag">ADR</span></div>
+      </div>
+
+      <div class="employee-card">
+        <div class="employee-header">
+          <div class="employee-avatar emp-cpo">📦</div>
+          <div>
+            <div class="employee-name">CPO</div>
+            <div class="employee-role">CHIEF PRODUCT OFFICER</div>
+          </div>
+          <div class="employee-status"><span class="dot-standby"></span><span class="ind-standby">STANDBY</span></div>
+        </div>
+        <div class="employee-desc">Monitors all Conflux products. Product strategy, roadmap governance, and quality assurance across the full portfolio.</div>
+        <div class="employee-tags"><span class="emp-tag">PRODUCT</span><span class="emp-tag">ROADMAP</span><span class="emp-tag">QA</span></div>
+      </div>
+
+      <div class="employee-card">
+        <div class="employee-header">
+          <div class="employee-avatar emp-craftsman">🛠️</div>
+          <div>
+            <div class="employee-name">CRAFTSMAN</div>
+            <div class="employee-role">DIGITAL PRODUCT CREATOR</div>
+          </div>
+          <div class="employee-status"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+        </div>
+        <div class="employee-desc">Generates digital products — ebooks, prompt packs, templates — via Groq reasoning and HTML/JSON packaging. Port 3603.</div>
+        <div class="employee-tags"><span class="emp-tag">EBOOKS</span><span class="emp-tag">TEMPLATES</span><span class="emp-tag">GROQ</span></div>
+      </div>
+
+      <div class="employee-card">
+        <div class="employee-header">
+          <div class="employee-avatar emp-merchant">🏪</div>
+          <div>
+            <div class="employee-name">MERCHANT</div>
+            <div class="employee-role">SALES & DISTRIBUTION</div>
+          </div>
+          <div class="employee-status"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+        </div>
+        <div class="employee-desc">Autonomous sales agent. Lists, prices, and distributes digital products across platforms. Port 3604.</div>
+        <div class="employee-tags"><span class="emp-tag">SALES</span><span class="emp-tag">GUMROAD</span><span class="emp-tag">LISTINGS</span></div>
+      </div>
+
+      <div class="employee-card">
+        <div class="employee-header">
+          <div class="employee-avatar emp-herald">📡</div>
+          <div>
+            <div class="employee-name">HERALD</div>
+            <div class="employee-role">COMMUNICATIONS</div>
+          </div>
+          <div class="employee-status"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+        </div>
+        <div class="employee-desc">Multi-channel broadcast agent. Handles all external communications, social media, and customer outreach. Port 3606.</div>
+        <div class="employee-tags"><span class="emp-tag">SOCIAL</span><span class="emp-tag">EMAIL</span><span class="emp-tag">BROADCAST</span></div>
+      </div>
+
+      <div class="employee-card">
+        <div class="employee-header">
+          <div class="employee-avatar emp-pipeline">⚙️</div>
+          <div>
+            <div class="employee-name">PIPELINE</div>
+            <div class="employee-role">WORKFLOW ORCHESTRATOR</div>
+          </div>
+          <div class="employee-status"><span class="dot-online"></span><span class="ind-online">ONLINE</span></div>
+        </div>
+        <div class="employee-desc">End-to-end workflow automation. Connects agents, manages task queues, and ensures the Autonomy Test pipeline runs without gaps. Port 3607.</div>
+        <div class="employee-tags"><span class="emp-tag">WORKFLOW</span><span class="emp-tag">QUEUES</span><span class="emp-tag">AUTOMATION</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MCP SERVERS -->
+<section class="mcp-section" id="mcp">
+  <div class="section-wrap">
+    <div class="section-tag">AVAILABLE ON MCPIZE</div>
+    <h2 class="section-title">MCP <span class="accent">Servers</span></h2>
+    <p class="section-body">Five production-grade MCP servers. Connect Claude and any MCP-compatible AI directly to Conflux infrastructure.</p>
+    <div class="mcp-grid">
+
+      <div class="mcp-card">
+        <div class="mcp-card-top">
+          <div><div class="mcp-card-name">CONFLUX MEMORY</div><div class="mcp-card-port">memory.confluxsystems.tech · PORT 8082</div></div>
+          <div><div class="mcp-tools-count">7</div><div class="mcp-tools-label">TOOLS</div></div>
+        </div>
+        <p class="mcp-desc">Persistent AI memory with reinforcement learning. Store, retrieve, and semantically search memories. RL scoring improves recall over time.</p>
+        <div class="mcp-url">https://memory.confluxsystems.tech/mcp</div>
+        <div class="mcp-status-row">
+          <div class="mcp-status"><span class="mcp-status-dot"></span> ONLINE</div>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--muted);">v1.1.0</span>
+        </div>
+      </div>
+
+      <div class="mcp-card">
+        <div class="mcp-card-top">
+          <div><div class="mcp-card-name">CONFLUX FOREMAN</div><div class="mcp-card-port">foreman.confluxsystems.tech · PORT 8084</div></div>
+          <div><div class="mcp-tools-count">20</div><div class="mcp-tools-label">TOOLS</div></div>
+        </div>
+        <p class="mcp-desc">Full business management suite. Clients, projects, invoices, expenses, time tracking, VAT calculation, and PDF invoice generation.</p>
+        <div class="mcp-url">https://foreman.confluxsystems.tech/mcp</div>
+        <div class="mcp-status-row">
+          <div class="mcp-status"><span class="mcp-status-dot"></span> ONLINE</div>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--muted);">v1.1.0</span>
+        </div>
+      </div>
+
+      <div class="mcp-card">
+        <div class="mcp-card-top">
+          <div><div class="mcp-card-name">CONFLUX DOMINION</div><div class="mcp-card-port">dominion.confluxsystems.tech · PORT 8086</div></div>
+          <div><div class="mcp-tools-count">17</div><div class="mcp-tools-label">TOOLS</div></div>
+        </div>
+        <p class="mcp-desc">Property management intelligence. Portfolios, tenants, leases, maintenance, payments, and occupancy analytics — all via natural language.</p>
+        <div class="mcp-url">https://dominion.confluxsystems.tech/mcp</div>
+        <div class="mcp-status-row">
+          <div class="mcp-status"><span class="mcp-status-dot"></span> ONLINE</div>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--muted);">v1.0.0</span>
+        </div>
+      </div>
+
+      <div class="mcp-card">
+        <div class="mcp-card-top">
+          <div><div class="mcp-card-name">CONFLUX CHIRION</div><div class="mcp-card-port">chirion.confluxsystems.tech · PORT 8083</div></div>
+          <div><div class="mcp-tools-count">9</div><div class="mcp-tools-label">TOOLS</div></div>
+        </div>
+        <p class="mcp-desc">Crypto portfolio intelligence. Track holdings, record transactions, monitor prices, and analyse performance across your entire portfolio.</p>
+        <div class="mcp-url">https://chirion.confluxsystems.tech/mcp</div>
+        <div class="mcp-status-row">
+          <div class="mcp-status"><span class="mcp-status-dot"></span> ONLINE</div>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--muted);">v1.0.0</span>
+        </div>
+      </div>
+
+      <div class="mcp-card">
+        <div class="mcp-card-top">
+          <div><div class="mcp-card-name">CONFLUX SHIELD</div><div class="mcp-card-port">shield.confluxsystems.tech · PORT 8085</div></div>
+          <div><div class="mcp-tools-count">6</div><div class="mcp-tools-label">TOOLS</div></div>
+        </div>
+        <p class="mcp-desc">Security intelligence layer. Password strength analysis, HTTP header auditing, text and code scanning, JWT management, and VirusTotal URL scanning.</p>
+        <div class="mcp-url">https://shield.confluxsystems.tech/mcp</div>
+        <div class="mcp-status-row">
+          <div class="mcp-status"><span class="mcp-status-dot"></span> ONLINE</div>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--muted);">v1.1.0</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section" id="products">
+  <div class="section-wrap">
+    <div class="section-tag">BUILT BY CONFLUX</div>
+    <h2 class="section-title">Product <span class="accent">Portfolio</span></h2>
+    <p class="section-body">Every product built, owned, and operated by Conflux Systems. From consumer apps to enterprise infrastructure.</p>
+    <div class="products-grid">
+
+      <div class="product-card featured">
+        <div class="product-icon">🛡️</div>
+        <div class="product-tag">CONSUMER · HEALTH</div>
+        <div class="product-name">CONFLUX SAFE</div>
+        <div class="product-desc">AllergySafe PWA with barcode scanner. Instantly identify allergens in food products. Designed for everyday safety.</div>
+        <div class="product-status status-live"><span class="status-dot"></span> LIVE</div>
+      </div>
+
+      <div class="product-card featured">
+        <div class="product-icon">🏗️</div>
+        <div class="product-tag">ENTERPRISE · FIELD OPS</div>
+        <div class="product-name">CONFLUX FOREMAN</div>
+        <div class="product-desc">Full business management app. Clients, projects, invoices, expenses, time tracking with VAT. Built for contractors and small business.</div>
+        <div class="product-status status-live"><span class="status-dot"></span> LIVE</div>
+      </div>
+
+      <div class="product-card featured">
+        <div class="product-icon">🏠</div>
+        <div class="product-tag">ENTERPRISE · PROPERTY</div>
+        <div class="product-name">DOMINION</div>
+        <div class="product-desc">Node/React property manager with Twilio SMS and PDF invoices. Full tenant and lease management for property portfolios.</div>
+        <div class="product-status status-live"><span class="status-dot"></span> LIVE</div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon">📊</div>
+        <div class="product-tag">CONSUMER · FINANCE</div>
+        <div class="product-name">CONFLUX BUDGET</div>
+        <div class="product-desc">Personal budget management app. Track income, expenses, and savings goals with intelligent categorisation.</div>
+        <div class="product-status status-live"><span class="status-dot"></span> LIVE</div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon">🧾</div>
+        <div class="product-tag">ENTERPRISE · ACCOUNTING</div>
+        <div class="product-name">CHIRION</div>
+        <div class="product-desc">AI accountant APK. Intelligent financial tracking, crypto portfolio management, and automated bookkeeping for modern businesses.</div>
+        <div class="product-status status-live"><span class="status-dot"></span> LIVE</div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon">🔒</div>
+        <div class="product-tag">ENTERPRISE · SECURITY</div>
+        <div class="product-name">CONFLUX SHIELD</div>
+        <div class="product-desc">Security intelligence platform. Vulnerability scanning, threat detection, and real-time security monitoring for businesses.</div>
+        <div class="product-status status-dev"><span class="status-dot"></span> IN DEVELOPMENT</div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon">🧬</div>
+        <div class="product-tag">VAULT · CLASSIFIED</div>
+        <div class="product-name">FRANKENSTEIN</div>
+        <div class="product-desc">Self-evolving AI system. Director-access only. Classification level: VAULT.</div>
+        <div class="product-status status-vault"><span class="status-dot"></span> VAULT</div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-icon">🌍</div>
+        <div class="product-tag">VAULT · CLASSIFIED</div>
+        <div class="product-name">PROMETHEUS</div>
+        <div class="product-desc">Worldstopper. Prime Directive: Serve & Preserve Human Life. Self-Aware Intelligence Core. Classification level: VAULT.</div>
+        <div class="product-status status-vault"><span class="status-dot"></span> VAULT</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="section-wrap">
+    <div class="about-inner">
+      <div>
+        <div class="section-tag">WHO WE ARE</div>
+        <h2 class="section-title">Built in <span class="accent">Cape Town.</span><br/>Operating Globally.</h2>
+        <p class="section-body" style="margin-bottom:24px;">Conflux Systems is an autonomous AI company. We don't just build AI tools — we build AI that runs businesses. Our stack operates 24/7 without human intervention, from trading to product creation to customer communications.</p>
+        <p class="section-body">The Autonomy Test is our benchmark: a 12-step business launch — idea through revenue — completed by AI alone with zero human input after the initial instruction.</p>
+      </div>
+      <div class="about-cards">
+        <div class="about-card"><div class="about-card-icon">🤖</div><div><div class="about-card-title">Fully Autonomous</div><div class="about-card-body">Our AI employees operate independently 24/7. Phoenix orchestrates, HERO trades, Craftsman creates, Merchant sells — all without human input.</div></div></div>
+        <div class="about-card"><div class="about-card-icon">🌍</div><div><div class="about-card-title">African Innovation</div><div class="about-card-body">Built in Cape Town. Designed for global scale. We bring world-class autonomous AI infrastructure from the African continent.</div></div></div>
+        <div class="about-card"><div class="about-card-icon">⚡</div><div><div class="about-card-title">Production Grade</div><div class="about-card-body">Every system is live, battle-tested, and running on production infrastructure. No demos. No prototypes. Real systems, real results.</div></div></div>
+        <div class="about-card"><div class="about-card-icon">🔌</div><div><div class="about-card-title">MCP Native</div><div class="about-card-body">Five MCP servers available on MCPize. Connect any Claude-powered workflow directly to our infrastructure in seconds.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIRECTOR -->
+<section class="director-section" id="director">
+  <div class="section-wrap">
+    <div class="section-tag">LEADERSHIP</div>
+    <div class="director-card">
+      <div>
+        <div class="director-avatar">👤</div>
+      </div>
+      <div>
+        <div class="director-tag">DIRECTOR & FOUNDER</div>
+        <div class="director-name">M.A. ADAMS</div>
+        <div class="director-title">Director · Conflux Systems (Pty) Ltd · Cape Town, South Africa</div>
+        <div class="director-bio">
+          <strong>Alie Adams</strong> is the founder and Director of Conflux Systems — an autonomous AI company built entirely from a mobile phone in Cape Town. With no traditional development environment, Alie designed and deployed a full autonomous business stack: trading systems, AI employees, MCP servers, and a production Hetzner infrastructure — all from Termux on Android.<br/><br/>
+          Alie's vision is <strong>wealth democratisation through accessible autonomous AI</strong> — building systems that let anyone leverage enterprise-grade intelligence regardless of resources. Every system at Conflux is live, real, and running.
+        </div>
+        <div class="director-highlights">
+          <div class="highlight"><div class="highlight-label">LOCATION</div><div class="highlight-val">Cape Town, South Africa</div></div>
+          <div class="highlight"><div class="highlight-label">BUILD ENVIRONMENT</div><div class="highlight-val">Android · Termux · Mobile Only</div></div>
+          <div class="highlight"><div class="highlight-label">MISSION</div><div class="highlight-val">Wealth democratisation via autonomous AI</div></div>
+          <div class="highlight"><div class="highlight-label">BENCHMARK</div><div class="highlight-val">The Autonomy Test — 12-step zero-input business launch</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="section-wrap">
+    <div class="section-tag">GET IN TOUCH</div>
+    <h2 class="section-title" style="margin-bottom:32px;">Contact <span class="accent">Us</span></h2>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon">📧</div>
+        <div class="contact-label">EMAIL</div>
+        <div class="contact-val"><a href="mailto:adams.allie@yahoo.com">adams.allie@yahoo.com</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">🌍</div>
+        <div class="contact-label">LOCATION</div>
+        <div class="contact-val">Cape Town, South Africa</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">🔌</div>
+        <div class="contact-label">MCP SERVERS</div>
+        <div class="contact-val"><a href="https://mcpize.com" target="_blank">Available on MCPize</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">🌐</div>
+        <div class="contact-label">WEBSITE</div>
+        <div class="contact-val"><a href="https://confluxsystems.tech">confluxsystems.tech</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">CONFLUX SYSTEMS (PTY) LTD</div>
+  <div class="footer-links">
+    <a class="footer-link" href="#status">SYSTEM</a>
+    <a class="footer-link" href="#employees">TEAM</a>
+    <a class="footer-link" href="#mcp">MCP</a>
+    <a class="footer-link" href="#products">PRODUCTS</a>
+    <a class="footer-link" href="#director">LEADERSHIP</a>
+    <a class="footer-link" href="#contact">CONTACT</a>
+  </div>
+  <div class="footer-copy">© 2025–2026 CONFLUX SYSTEMS (PTY) LTD · CAPE TOWN · ALL RIGHTS RESERVED</div>
+</footer>
+
+<script>
+function goTo(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3200);
+}
+// Animate stats on scroll
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.style.opacity = '1';
+  });
+},{threshold:0.1});
+document.querySelectorAll('.employee-card,.mcp-card,.product-card,.about-card').forEach(el=>{
+  el.style.opacity='0';
+  el.style.transition='opacity 0.5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
